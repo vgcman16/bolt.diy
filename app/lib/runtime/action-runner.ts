@@ -322,6 +322,19 @@ export class ActionRunner {
     }
 
     try {
+      let existing: string | null = null;
+
+      try {
+        existing = await webcontainer.fs.readFile(relativePath, 'utf-8');
+      } catch {
+        existing = null;
+      }
+
+      if (existing !== null && existing === action.content) {
+        logger.debug(`Skipped writing ${relativePath} (no changes)`);
+        return;
+      }
+
       await webcontainer.fs.writeFile(relativePath, action.content);
       logger.debug(`File written ${relativePath}`);
     } catch (error) {
