@@ -203,7 +203,7 @@ const getFs = (
             return;
           }
 
-          return await webcontainer.fs.writeFile(relativePath, data);
+          await webcontainer.fs.writeFile(relativePath, data);
         } else {
           const encoding = options?.encoding || 'utf8';
           const existing = await webcontainer.fs.readFile(relativePath, encoding).catch(() => null);
@@ -212,7 +212,7 @@ const getFs = (
             return;
           }
 
-          return await webcontainer.fs.writeFile(relativePath, data, encoding);
+          await webcontainer.fs.writeFile(relativePath, data, encoding);
         }
       } catch (error) {
         throw error;
