@@ -26,18 +26,22 @@ export async function action({ request }: ActionFunctionArgs) {
         headers: { Authorization: `Bearer ${token}`, 'Content-Type': 'application/json' },
         body: JSON.stringify({ name }),
       });
+
       if (!createRes.ok) {
         const txt = await createRes.text();
         return json({ error: `Failed to create project: ${txt}` }, { status: 400 });
       }
+
       targetProject = name;
     }
 
     const zip = new JSZip();
+
     for (const [filePath, content] of Object.entries(files)) {
       const normalized = filePath.startsWith('/') ? filePath.substring(1) : filePath;
       zip.file(normalized, content);
     }
+
     const zipData = await zip.generateAsync({ type: 'nodebuffer' });
 
     const form = new FormData();
@@ -53,7 +57,13 @@ export async function action({ request }: ActionFunctionArgs) {
       },
     );
 
-    const deployData = await deployRes.json();
+    interface DeployApiResponse {
+      result: { id: string; url: string; project_id: string };
+      errors?: { message: string }[];
+    }
+
+    const deployData = (await deployRes.json()) as DeployApiResponse;
+
     if (!deployRes.ok) {
       return json({ error: deployData.errors?.[0]?.message || 'Failed to deploy' }, { status: 400 });
     }

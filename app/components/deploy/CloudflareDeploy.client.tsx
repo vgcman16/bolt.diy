@@ -28,6 +28,7 @@ export function useCloudflareDeploy() {
       setIsDeploying(true);
 
       const artifact = workbenchStore.firstArtifact;
+
       if (!artifact) {
         throw new Error('No active project found');
       }
@@ -39,6 +40,7 @@ export function useCloudflareDeploy() {
         title: 'Cloudflare Deployment',
         type: 'standalone',
       });
+
       const deployArtifact = workbenchStore.artifacts.get()[deploymentId];
 
       deployArtifact.runner.handleDeployAction('building', 'running', { source: 'cloudflare' });
@@ -66,6 +68,7 @@ export function useCloudflareDeploy() {
       const commonDirs = [buildPath, '/dist', '/build', '/out', '/output', '/.next', '/public'];
       let finalBuildPath = buildPath;
       let found = false;
+
       for (const dir of commonDirs) {
         try {
           await container.fs.readdir(dir);
@@ -74,13 +77,18 @@ export function useCloudflareDeploy() {
           break;
         } catch {}
       }
-      if (!found) throw new Error('Could not find build output directory');
+
+      if (!found) {
+        throw new Error('Could not find build output directory');
+      }
 
       async function getAllFiles(dirPath: string): Promise<Record<string, string>> {
         const files: Record<string, string> = {};
         const entries = await container.fs.readdir(dirPath, { withFileTypes: true });
+
         for (const entry of entries) {
           const fullPath = path.join(dirPath, entry.name);
+
           if (entry.isFile()) {
             const content = await container.fs.readFile(fullPath, 'utf-8');
             const deployPath = fullPath.replace(finalBuildPath, '');
@@ -89,6 +97,7 @@ export function useCloudflareDeploy() {
             Object.assign(files, await getAllFiles(fullPath));
           }
         }
+
         return files;
       }
 
@@ -107,7 +116,14 @@ export function useCloudflareDeploy() {
         }),
       });
 
-      const data = await response.json();
+      interface DeployResponse {
+        deploy?: { url: string };
+        project?: { name: string };
+        error?: string;
+      }
+
+      const data = (await response.json()) as DeployResponse;
+
       if (!response.ok || !data.deploy || !data.project) {
         deployArtifact.runner.handleDeployAction('deploying', 'failed', {
           error: data.error || 'Invalid deployment response',
@@ -124,6 +140,7 @@ export function useCloudflareDeploy() {
     } catch (err) {
       console.error('Cloudflare deploy error:', err);
       toast.error(err instanceof Error ? err.message : 'Cloudflare deployment failed');
+
       return false;
     } finally {
       setIsDeploying(false);
