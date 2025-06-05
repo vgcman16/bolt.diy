@@ -522,7 +522,7 @@ export class ActionRunner {
     details?: {
       url?: string;
       error?: string;
-      source?: 'netlify' | 'vercel' | 'github';
+      source?: 'netlify' | 'vercel' | 'cloudflare' | 'github';
     },
   ): void {
     if (!this.onDeployAlert) {

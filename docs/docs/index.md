@@ -40,6 +40,7 @@ Also [this pinned post in our community](https://thinktank.ottomator.ai/t/videos
 - **Revert code to earlier versions** for easier debugging and quicker changes.
 - **Download projects as ZIP** for easy portability.
 - **Integration-ready Docker support** for a hassle-free setup.
+- **One-click deployment** to **Netlify**, **Vercel**, or **Cloudflare Pages**.
 
 ---
 
