@@ -7,7 +7,7 @@ interface FilePreviewProps {
   onRemove: (index: number) => void;
 }
 
-const FilePreview: React.FC<FilePreviewProps> = ({ files, imageDataList, textDataList, onRemove }) => {
+const FilePreview: React.FC<FilePreviewProps> = ({ files, imageDataList, textDataList: _textDataList, onRemove }) => {
   if (!files || files.length === 0) {
     return null;
   }

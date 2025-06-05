@@ -316,6 +316,8 @@ export const ChatImpl = memo(
 
       let finalMessageContent = messageContent;
 
+      let uploadArtifact = '';
+
       if (selectedElement) {
         console.log('Selected Element:', selectedElement);
 
@@ -437,14 +439,13 @@ export const ChatImpl = memo(
       const uploadedMap: { [path: string]: string } = {};
       uploadedFiles.forEach((file, idx) => {
         const text = textDataList[idx];
+
         if (text) {
           uploadedMap[file.name] = escapeBoltTags(text);
         }
       });
-      const uploadArtifact =
-        Object.keys(uploadedMap).length > 0
-          ? uploadedFilesToArtifacts(uploadedMap, `uploaded-${Date.now()}`)
-          : '';
+      uploadArtifact =
+        Object.keys(uploadedMap).length > 0 ? uploadedFilesToArtifacts(uploadedMap, `uploaded-${Date.now()}`) : '';
 
       if (modifiedFiles !== undefined) {
         const userUpdateArtifact = filesToArtifacts(modifiedFiles, `${Date.now()}`);
