@@ -312,6 +312,14 @@ export class WorkbenchStore {
     return this.#filesStore.unlockFile(filePath);
   }
 
+  targetFile(filePath: string) {
+    return this.#filesStore.targetFile(filePath);
+  }
+
+  unTargetFile(filePath: string) {
+    return this.#filesStore.unTargetFile(filePath);
+  }
+
   /**
    * Unlock a folder and all its contents to allow edits
    * @param folderPath Path to the folder to unlock
@@ -328,6 +336,10 @@ export class WorkbenchStore {
    */
   isFileLocked(filePath: string) {
     return this.#filesStore.isFileLocked(filePath);
+  }
+
+  isFileTargeted(filePath: string) {
+    return this.#filesStore.isFileTargeted(filePath);
   }
 
   /**

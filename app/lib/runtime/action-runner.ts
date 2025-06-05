@@ -6,6 +6,8 @@ import { createScopedLogger } from '~/utils/logger';
 import { unreachable } from '~/utils/unreachable';
 import type { ActionCallbackData } from './message-parser';
 import type { BoltShell } from '~/utils/shell';
+import { isFileLocked } from '~/utils/fileLocks';
+import { isFileTargeted, hasTargetedFiles } from '~/utils/targetFiles';
 
 const logger = createScopedLogger('ActionRunner');
 
@@ -302,6 +304,16 @@ export class ActionRunner {
   async #runFileAction(action: ActionState) {
     if (action.type !== 'file') {
       unreachable('Expected file action');
+    }
+
+    if (isFileLocked(action.filePath).locked) {
+      logger.warn(`Skipping locked file ${action.filePath}`);
+      return;
+    }
+
+    if (hasTargetedFiles() && !isFileTargeted(action.filePath)) {
+      logger.info(`Skipping non-targeted file ${action.filePath}`);
+      return;
     }
 
     const webcontainer = await this.#webcontainer;
