@@ -84,6 +84,8 @@ project, please check the [project management guide](./PROJECT.md) to get starte
 - ✅ **HIGH PRIORITY** - Better prompting for smaller LLMs (code window sometimes doesn't start)
 - ⬜ **HIGH PRIORITY** - Run agents in the backend as opposed to a single model call
 - ✅ Deploy directly to Netlify (@xKevIsDev)
+- ✅ Deploy directly to Vercel
+- ✅ Deploy directly to Cloudflare Pages
 - ✅ Supabase Integration (@xKevIsDev)
 - ⬜ Have LLM plan the project in a MD file for better results/transparency
 - ✅ VSCode Integration with git-like confirmations
@@ -104,7 +106,7 @@ project, please check the [project management guide](./PROJECT.md) to get starte
 - **Revert code to earlier versions** for easier debugging and quicker changes.
 - **Download projects as ZIP** for easy portability Sync to a folder on the host.
 - **Integration-ready Docker support** for a hassle-free setup.
-- **Deploy** directly to **Netlify**
+- **Deploy** directly to **Netlify**, **Vercel**, or **Cloudflare Pages**
 
 ## Setup
 
