@@ -563,7 +563,17 @@ export class FilesStore {
         unreachable('Expected content to be defined');
       }
 
-      await webcontainer.fs.writeFile(relativePath, content);
+      try {
+        const existing = await webcontainer.fs.readFile(relativePath, 'utf-8');
+
+        if (existing === content) {
+          logger.debug(`Skipped writing ${relativePath} (no changes)`);
+        } else {
+          await webcontainer.fs.writeFile(relativePath, content);
+        }
+      } catch {
+        await webcontainer.fs.writeFile(relativePath, content);
+      }
 
       if (!this.#modifiedFiles.has(filePath)) {
         this.#modifiedFiles.set(filePath, oldContent);
