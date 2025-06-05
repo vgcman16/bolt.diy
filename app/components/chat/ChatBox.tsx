@@ -296,6 +296,19 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
               onStop={props.stopListening}
               disabled={props.isStreaming}
             />
+            <IconButton
+              title="Plan project in MD file"
+              className="transition-all flex items-center gap-1 px-1.5"
+              onClick={(event) =>
+                props.handleSendMessage?.(
+                  event,
+                  'Plan the project in a plan.md file with sections: Files/components needed, Data flow, Deployment plan.',
+                )
+              }
+            >
+              <div className="i-ph:map-trifold text-xl" />
+              <span>Plan</span>
+            </IconButton>
             {props.chatStarted && (
               <IconButton
                 title="Discuss"

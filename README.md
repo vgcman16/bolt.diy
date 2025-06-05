@@ -87,7 +87,7 @@ project, please check the [project management guide](./PROJECT.md) to get starte
 - ✅ Deploy directly to Vercel
 - ✅ Deploy directly to Cloudflare Pages
 - ✅ Supabase Integration (@xKevIsDev)
-- ⬜ Have LLM plan the project in a MD file for better results/transparency
+- ✅ Have LLM plan the project in a MD file for better results/transparency
 - ✅ VSCode Integration with git-like confirmations
 - ⬜ Upload documents for knowledge - UI design templates, a code base to reference coding style, etc.
 - ✅ Voice prompting
