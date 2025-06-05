@@ -25,7 +25,8 @@ import { createSampler } from '~/utils/sampler';
 import { getTemplates, selectStarterTemplate } from '~/utils/selectStarterTemplate';
 import { logStore } from '~/lib/stores/logs';
 import { streamingState } from '~/lib/stores/streaming';
-import { filesToArtifacts } from '~/utils/fileUtils';
+import { filesToArtifacts, uploadedFilesToArtifacts } from '~/utils/fileUtils';
+import { escapeBoltTags } from '~/utils/projectCommands';
 import { supabaseConnection } from '~/lib/stores/supabase';
 import { defaultDesignScheme, type DesignScheme } from '~/types/design-scheme';
 import type { ElementInfo } from '~/components/workbench/Inspector';
@@ -123,6 +124,7 @@ export const ChatImpl = memo(
     const [chatStarted, setChatStarted] = useState(initialMessages.length > 0);
     const [uploadedFiles, setUploadedFiles] = useState<File[]>([]);
     const [imageDataList, setImageDataList] = useState<string[]>([]);
+    const [textDataList, setTextDataList] = useState<string[]>([]);
     const [searchParams, setSearchParams] = useSearchParams();
     const [fakeLoading, setFakeLoading] = useState(false);
     const files = useStore(workbenchStore.files);
@@ -353,7 +355,7 @@ export const ChatImpl = memo(
                   content: [
                     {
                       type: 'text',
-                      text: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${finalMessageContent}`,
+                      text: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${uploadArtifact}${finalMessageContent}`,
                     },
                     ...imageDataList.map((imageData) => ({
                       type: 'image',
@@ -379,6 +381,7 @@ export const ChatImpl = memo(
 
               setUploadedFiles([]);
               setImageDataList([]);
+              setTextDataList([]);
 
               resetEnhancer();
 
@@ -398,7 +401,7 @@ export const ChatImpl = memo(
             content: [
               {
                 type: 'text',
-                text: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${finalMessageContent}`,
+                text: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${uploadArtifact}${finalMessageContent}`,
               },
               ...imageDataList.map((imageData) => ({
                 type: 'image',
@@ -414,6 +417,7 @@ export const ChatImpl = memo(
 
         setUploadedFiles([]);
         setImageDataList([]);
+        setTextDataList([]);
 
         resetEnhancer();
 
@@ -430,6 +434,18 @@ export const ChatImpl = memo(
 
       chatStore.setKey('aborted', false);
 
+      const uploadedMap: { [path: string]: string } = {};
+      uploadedFiles.forEach((file, idx) => {
+        const text = textDataList[idx];
+        if (text) {
+          uploadedMap[file.name] = escapeBoltTags(text);
+        }
+      });
+      const uploadArtifact =
+        Object.keys(uploadedMap).length > 0
+          ? uploadedFilesToArtifacts(uploadedMap, `uploaded-${Date.now()}`)
+          : '';
+
       if (modifiedFiles !== undefined) {
         const userUpdateArtifact = filesToArtifacts(modifiedFiles, `${Date.now()}`);
         append({
@@ -437,7 +453,7 @@ export const ChatImpl = memo(
           content: [
             {
               type: 'text',
-              text: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${userUpdateArtifact}${finalMessageContent}`,
+              text: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${uploadArtifact}${userUpdateArtifact}${finalMessageContent}`,
             },
             ...imageDataList.map((imageData) => ({
               type: 'image',
@@ -453,7 +469,7 @@ export const ChatImpl = memo(
           content: [
             {
               type: 'text',
-              text: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${finalMessageContent}`,
+              text: `[Model: ${model}]\n\n[Provider: ${provider.name}]\n\n${uploadArtifact}${finalMessageContent}`,
             },
             ...imageDataList.map((imageData) => ({
               type: 'image',
@@ -468,6 +484,7 @@ export const ChatImpl = memo(
 
       setUploadedFiles([]);
       setImageDataList([]);
+      setTextDataList([]);
 
       resetEnhancer();
 
@@ -565,6 +582,8 @@ export const ChatImpl = memo(
         setUploadedFiles={setUploadedFiles}
         imageDataList={imageDataList}
         setImageDataList={setImageDataList}
+        textDataList={textDataList}
+        setTextDataList={setTextDataList}
         actionAlert={actionAlert}
         clearAlert={() => workbenchStore.clearAlert()}
         supabaseAlert={supabaseAlert}

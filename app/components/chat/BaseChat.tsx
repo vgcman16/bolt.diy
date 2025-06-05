@@ -26,6 +26,7 @@ import type { ModelInfo } from '~/lib/modules/llm/types';
 import ProgressCompilation from './ProgressCompilation';
 import type { ProgressAnnotation } from '~/types/context';
 import type { ActionRunner } from '~/lib/runtime/action-runner';
+import { extractTextFromFile } from '~/utils/fileExtract';
 import { SupabaseChatAlert } from '~/components/chat/SupabaseAlert';
 import { expoUrlAtom } from '~/lib/stores/qrCodeStore';
 import { useStore } from '@nanostores/react';
@@ -64,6 +65,8 @@ interface BaseChatProps {
   setUploadedFiles?: (files: File[]) => void;
   imageDataList?: string[];
   setImageDataList?: (dataList: string[]) => void;
+  textDataList?: string[];
+  setTextDataList?: (dataList: string[]) => void;
   actionAlert?: ActionAlert;
   clearAlert?: () => void;
   supabaseAlert?: SupabaseAlert;
@@ -108,6 +111,8 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
       setUploadedFiles,
       imageDataList = [],
       setImageDataList,
+      textDataList = [],
+      setTextDataList,
       messages,
       actionAlert,
       clearAlert,
@@ -284,20 +289,28 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     const handleFileUpload = () => {
       const input = document.createElement('input');
       input.type = 'file';
-      input.accept = 'image/*';
+      input.accept =
+        'image/*,.pdf,.docx,.txt,.md,.js,.ts,.tsx,.html,.css,.json';
 
       input.onchange = async (e) => {
         const file = (e.target as HTMLInputElement).files?.[0];
 
         if (file) {
-          const reader = new FileReader();
-
-          reader.onload = (e) => {
-            const base64Image = e.target?.result as string;
+          if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = (ev) => {
+              const base64Image = ev.target?.result as string;
+              setUploadedFiles?.([...uploadedFiles, file]);
+              setImageDataList?.([...imageDataList, base64Image]);
+              setTextDataList?.([...textDataList, '']);
+            };
+            reader.readAsDataURL(file);
+          } else {
+            const text = await extractTextFromFile(file);
             setUploadedFiles?.([...uploadedFiles, file]);
-            setImageDataList?.([...imageDataList, base64Image]);
-          };
-          reader.readAsDataURL(file);
+            setImageDataList?.([...imageDataList, '']);
+            setTextDataList?.([...textDataList, text]);
+          }
         }
       };
 
@@ -312,20 +325,25 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
       }
 
       for (const item of items) {
-        if (item.type.startsWith('image/')) {
+        if (item.kind === 'file') {
+          const file = item.getAsFile();
+          if (!file) continue;
           e.preventDefault();
 
-          const file = item.getAsFile();
-
-          if (file) {
+          if (file.type.startsWith('image/')) {
             const reader = new FileReader();
-
-            reader.onload = (e) => {
-              const base64Image = e.target?.result as string;
+            reader.onload = (ev) => {
+              const base64Image = ev.target?.result as string;
               setUploadedFiles?.([...uploadedFiles, file]);
               setImageDataList?.([...imageDataList, base64Image]);
+              setTextDataList?.([...textDataList, '']);
             };
             reader.readAsDataURL(file);
+          } else {
+            const text = await extractTextFromFile(file);
+            setUploadedFiles?.([...uploadedFiles, file]);
+            setImageDataList?.([...imageDataList, '']);
+            setTextDataList?.([...textDataList, text]);
           }
 
           break;
@@ -432,6 +450,8 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
                   setUploadedFiles={setUploadedFiles}
                   imageDataList={imageDataList}
                   setImageDataList={setImageDataList}
+                  textDataList={textDataList}
+                  setTextDataList={setTextDataList}
                   textareaRef={textareaRef}
                   input={input}
                   handleInputChange={handleInputChange}

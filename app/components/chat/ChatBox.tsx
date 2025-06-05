@@ -10,6 +10,7 @@ import { ScreenshotStateManager } from './ScreenshotStateManager';
 import { SendButton } from './SendButton.client';
 import { IconButton } from '~/components/ui/IconButton';
 import { toast } from 'react-toastify';
+import { extractTextFromFile } from '~/utils/fileExtract';
 import { SpeechRecognitionButton } from '~/components/chat/SpeechRecognition';
 import { SupabaseConnection } from './SupabaseConnection';
 import { ExpoQrModal } from '~/components/workbench/ExpoQrModal';
@@ -50,6 +51,8 @@ interface ChatBoxProps {
   setModel?: ((model: string) => void) | undefined;
   setUploadedFiles?: ((files: File[]) => void) | undefined;
   setImageDataList?: ((dataList: string[]) => void) | undefined;
+  textDataList: string[];
+  setTextDataList?: ((dataList: string[]) => void) | undefined;
   handleInputChange?: ((event: React.ChangeEvent<HTMLTextAreaElement>) => void) | undefined;
   handleStop?: (() => void) | undefined;
   enhancingPrompt?: boolean | undefined;
@@ -134,9 +137,11 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
       <FilePreview
         files={props.uploadedFiles}
         imageDataList={props.imageDataList}
+        textDataList={props.textDataList}
         onRemove={(index) => {
           props.setUploadedFiles?.(props.uploadedFiles.filter((_, i) => i !== index));
           props.setImageDataList?.(props.imageDataList.filter((_, i) => i !== index));
+          props.setTextDataList?.(props.textDataList.filter((_, i) => i !== index));
         }}
       />
       <ClientOnly>
@@ -192,16 +197,22 @@ export const ChatBox: React.FC<ChatBoxProps> = (props) => {
             e.currentTarget.style.border = '1px solid var(--bolt-elements-borderColor)';
 
             const files = Array.from(e.dataTransfer.files);
-            files.forEach((file) => {
+            files.forEach(async (file) => {
               if (file.type.startsWith('image/')) {
                 const reader = new FileReader();
 
-                reader.onload = (e) => {
-                  const base64Image = e.target?.result as string;
+                reader.onload = (ev) => {
+                  const base64Image = ev.target?.result as string;
                   props.setUploadedFiles?.([...props.uploadedFiles, file]);
                   props.setImageDataList?.([...props.imageDataList, base64Image]);
+                  props.setTextDataList?.([...props.textDataList, '']);
                 };
                 reader.readAsDataURL(file);
+              } else {
+                const text = await extractTextFromFile(file);
+                props.setUploadedFiles?.([...props.uploadedFiles, file]);
+                props.setImageDataList?.([...props.imageDataList, '']);
+                props.setTextDataList?.([...props.textDataList, text]);
               }
             });
           }}
