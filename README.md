@@ -86,7 +86,7 @@ project, please check the [project management guide](./PROJECT.md) to get starte
 - ✅ Deploy directly to Netlify (@xKevIsDev)
 - ✅ Supabase Integration (@xKevIsDev)
 - ⬜ Have LLM plan the project in a MD file for better results/transparency
-- ⬜ VSCode Integration with git-like confirmations
+- ✅ VSCode Integration with git-like confirmations
 - ⬜ Upload documents for knowledge - UI design templates, a code base to reference coding style, etc.
 - ✅ Voice prompting
 - ⬜ Azure Open AI API Integration
