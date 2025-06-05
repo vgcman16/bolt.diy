@@ -30,9 +30,11 @@ export async function fetchCloudflareProjects(token: string, accountId: string) 
     const response = await fetch(`https://api.cloudflare.com/client/v4/accounts/${accountId}/pages/projects`, {
       headers: { Authorization: `Bearer ${token}` },
     });
+
     if (!response.ok) {
       throw new Error(`Failed to fetch projects: ${response.status}`);
     }
+
     const data = (await response.json()) as any;
     updateCloudflareConnection({ projects: data.result as CloudflareProject[] });
   } catch (error) {

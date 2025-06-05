@@ -15,6 +15,7 @@ export function CloudflareDeploymentLink() {
   }, [connection.token, connection.accountId]);
 
   const project = connection.projects?.find((p) => p.name.includes(`bolt-diy-${currentChatId}`));
+
   if (!project) {
     return null;
   }
