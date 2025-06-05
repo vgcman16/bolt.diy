@@ -41,6 +41,7 @@ Also [this pinned post in our community](https://thinktank.ottomator.ai/t/videos
 - **Download projects as ZIP** for easy portability.
 - **Integration-ready Docker support** for a hassle-free setup.
 - **One-click deployment** to **Netlify**, **Vercel**, or **Cloudflare Pages**.
+- **Import Figma designs** to bootstrap your UI code.
 
 ---
 
