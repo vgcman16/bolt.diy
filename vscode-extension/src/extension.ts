@@ -23,20 +23,20 @@ export function activate(context: vscode.ExtensionContext) {
       }
 
       const files = lines.map((l) => l.slice(3));
-      vscode.window.showQuickPick(files, { placeHolder: 'Select a file to review' }).then((file) => {
+      vscode.window.showQuickPick(files, { placeHolder: 'Select a file to review' }).then((file: string | undefined) => {
         if (!file) {
           return;
         }
 
-        exec(`git diff -- ${file}`, { cwd }, (diffErr, diff) => {
+        exec(`git diff -- ${file}`, { cwd }, (diffErr, diff: string) => {
           if (diffErr) {
             vscode.window.showErrorMessage('Failed to get diff.');
             return;
           }
 
-          vscode.workspace.openTextDocument({ content: diff, language: 'diff' }).then((doc) => {
+          vscode.workspace.openTextDocument({ content: diff, language: 'diff' }).then((doc: vscode.TextDocument) => {
             vscode.window.showTextDocument(doc, { preview: true }).then(() => {
-              vscode.window.showInformationMessage(`Stage ${file}?`, 'Yes', 'No').then((answer) => {
+              vscode.window.showInformationMessage(`Stage ${file}?`, 'Yes', 'No').then((answer: string | undefined) => {
                 if (answer === 'Yes') {
                   exec(`git add ${file}`, { cwd }, () => {
                     vscode.window.showInformationMessage(`Staged ${file}`);
