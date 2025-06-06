@@ -1,7 +1,7 @@
 import type { Message } from 'ai';
 import { toast } from 'react-toastify';
 import { ImportFolderButton } from '~/components/chat/ImportFolderButton';
-import GitCloneButton from '../GitCloneButton';
+import GitCloneButton from '~/components/chat/GitCloneButton';
 import { Button } from '~/components/ui/Button';
 import { classNames } from '~/utils/classNames';
 

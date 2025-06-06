@@ -82,6 +82,7 @@ export const CodeBlock = memo(
             title="Ask Bolt about this code"
             onClick={() => {
               const askFn = (window as any).__BOLT_ASK_SNIPPET__;
+
               if (typeof askFn === 'function') {
                 askFn(code, language);
               }

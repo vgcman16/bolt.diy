@@ -12,6 +12,7 @@ function loadNotes(): Note[] {
   if (typeof localStorage === 'undefined') {
     return [];
   }
+
   try {
     const json = localStorage.getItem(NOTES_KEY);
     return json ? JSON.parse(json) : [];
@@ -21,7 +22,10 @@ function loadNotes(): Note[] {
 }
 
 function saveNotes(notes: Note[]) {
-  if (typeof localStorage === 'undefined') return;
+  if (typeof localStorage === 'undefined') {
+    return;
+  }
+
   try {
     localStorage.setItem(NOTES_KEY, JSON.stringify(notes));
   } catch {}
