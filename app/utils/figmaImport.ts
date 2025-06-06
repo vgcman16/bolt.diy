@@ -8,9 +8,11 @@ import { escapeBoltTags } from './projectCommands';
  */
 function extractFileKey(url: string): string {
   const match = url.match(/file\/(\w+)/);
+
   if (!match) {
     throw new Error('Invalid Figma URL');
   }
+
   return match[1];
 }
 
@@ -26,8 +28,9 @@ function collectFrames(node: any, frames: any[]) {
   if (node.type === 'FRAME') {
     frames.push(node);
   }
+
   if (Array.isArray(node.children)) {
-    node.children.forEach((child) => collectFrames(child, frames));
+    node.children.forEach((child: any) => collectFrames(child, frames));
   }
 }
 
@@ -35,6 +38,7 @@ function figmaFramesToComponents(frames: any[]): GeneratedComponent[] {
   return frames.map((frame) => {
     const name = frame.name.replace(/[^a-zA-Z0-9]/g, '') || 'Component';
     const code = `export function ${name}() {\n  return <div>${frame.name}</div>;\n}`;
+
     return { name, code };
   });
 }
@@ -42,10 +46,7 @@ function figmaFramesToComponents(frames: any[]): GeneratedComponent[] {
 /**
  * Create chat messages from a Figma design
  */
-export async function createChatFromFigma(
-  figmaUrl: string,
-  token: string,
-): Promise<Message[]> {
+export async function createChatFromFigma(figmaUrl: string, token: string): Promise<Message[]> {
   const fileKey = extractFileKey(figmaUrl);
   const res = await fetch(`https://api.figma.com/v1/files/${fileKey}`, {
     headers: { 'X-Figma-Token': token },
@@ -55,14 +56,14 @@ export async function createChatFromFigma(
     throw new Error(`Failed to fetch Figma file: ${res.status}`);
   }
 
-  const data = await res.json();
+  const data = (await res.json()) as { document: unknown };
   const frames: any[] = [];
-  collectFrames(data.document, frames);
+  collectFrames((data as any).document, frames);
+
   const components = figmaFramesToComponents(frames);
   const componentActions = components
     .map(
-      (c) =>
-        `<boltAction type="file" filePath="app/components/${c.name}.tsx">${escapeBoltTags(c.code)}</boltAction>`,
+      (c) => `<boltAction type="file" filePath="app/components/${c.name}.tsx">${escapeBoltTags(c.code)}</boltAction>`,
     )
     .join('\n');
 

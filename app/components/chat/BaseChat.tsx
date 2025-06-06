@@ -288,8 +288,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
     const handleFileUpload = () => {
       const input = document.createElement('input');
       input.type = 'file';
-      input.accept =
-        'image/*,.pdf,.docx,.txt,.md,.js,.ts,.tsx,.html,.css,.json';
+      input.accept = 'image/*,.pdf,.docx,.txt,.md,.js,.ts,.tsx,.html,.css,.json';
 
       input.onchange = async (e) => {
         const file = (e.target as HTMLInputElement).files?.[0];
@@ -297,6 +296,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
         if (file) {
           if (file.type.startsWith('image/')) {
             const reader = new FileReader();
+
             reader.onload = (ev) => {
               const base64Image = ev.target?.result as string;
               setUploadedFiles?.([...uploadedFiles, file]);
@@ -326,11 +326,16 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
       for (const item of items) {
         if (item.kind === 'file') {
           const file = item.getAsFile();
-          if (!file) continue;
+
+          if (!file) {
+            continue;
+          }
+
           e.preventDefault();
 
           if (file.type.startsWith('image/')) {
             const reader = new FileReader();
+
             reader.onload = (ev) => {
               const base64Image = ev.target?.result as string;
               setUploadedFiles?.([...uploadedFiles, file]);

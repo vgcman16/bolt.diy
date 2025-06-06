@@ -20,11 +20,7 @@ import {
   migrateLegacyLocks,
   clearCache,
 } from '~/lib/persistence/lockedFiles';
-import {
-  getTargetedFilesForChat,
-  addTargetedFile,
-  removeTargetedFile,
-} from '~/lib/persistence/targetedFiles';
+import { getTargetedFilesForChat, addTargetedFile, removeTargetedFile } from '~/lib/persistence/targetedFiles';
 import { getCurrentChatId } from '~/utils/fileLocks';
 
 const logger = createScopedLogger('FilesStore');
@@ -101,6 +97,7 @@ export class FilesStore {
 
     // Load locked files from localStorage
     this.#loadLockedFiles();
+
     // Load targeted files from localStorage
     this.#loadTargetedFiles();
 
@@ -377,6 +374,7 @@ export class FilesStore {
 
     this.files.setKey(filePath, { ...file, isTargeted: true });
     addTargetedFile(currentChatId, filePath);
+
     return true;
   }
 
@@ -394,6 +392,7 @@ export class FilesStore {
 
     this.files.setKey(filePath, { ...file, isTargeted: false });
     removeTargetedFile(currentChatId, filePath);
+
     return true;
   }
 
