@@ -120,10 +120,7 @@ ${files[filePath].content}
   `;
 };
 
-export const uploadedFilesToArtifacts = (
-  files: { [path: string]: string },
-  id: string,
-): string => {
+export const uploadedFilesToArtifacts = (files: { [path: string]: string }, id: string): string => {
   return `
 <boltArtifact id="${id}" title="Uploaded Files">
 ${Object.keys(files)

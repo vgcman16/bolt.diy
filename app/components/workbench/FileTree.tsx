@@ -449,6 +449,7 @@ function FileContextMenu({
       }
 
       const success = workbenchStore.targetFile(fullPath);
+
       if (success) {
         toast.success(`File targeted`);
       }
@@ -465,6 +466,7 @@ function FileContextMenu({
       }
 
       const success = workbenchStore.unTargetFile(fullPath);
+
       if (success) {
         toast.success(`File un-targeted`);
       }
@@ -761,9 +763,7 @@ function File({
                 title={'File is locked'}
               />
             )}
-            {isTargeted && (
-              <span className="shrink-0 i-ph:crosshair text-green-500 scale-80" title="Targeted file" />
-            )}
+            {isTargeted && <span className="shrink-0 i-ph:crosshair text-green-500 scale-80" title="Targeted file" />}
             {unsavedChanges && <span className="i-ph:circle-fill scale-68 shrink-0 text-orange-500" />}
           </div>
         </div>

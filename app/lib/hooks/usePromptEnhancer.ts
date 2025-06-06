@@ -47,6 +47,7 @@ export function usePromptEnhancer() {
       const decoder = new TextDecoder();
 
       _input = '';
+
       let _error;
 
       try {
