@@ -76,6 +76,7 @@ class LogStore {
     // Migrate from cookies if localStorage is empty but cookie data exists
     if (!savedLogs) {
       const cookieLogs = Cookies.get('eventLogs');
+
       if (cookieLogs) {
         savedLogs = cookieLogs;
         localStorage.setItem('eventLogs', cookieLogs);
