@@ -567,8 +567,8 @@ export const ChatImpl = memo(
             content: parsedMessages[i] || '',
           };
         })}
-        enhancePrompt={() => {
-          enhancePrompt(
+        enhancePrompt={async () => {
+          await enhancePrompt(
             input,
             (input) => {
               setInput(input);
