@@ -14,6 +14,7 @@ export type TabType =
   | 'connection'
   | 'debug'
   | 'event-logs'
+  | 'notes'
   | 'update'
   | 'task-manager'
   | 'tab-management';
