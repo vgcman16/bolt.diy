@@ -28,6 +28,7 @@ import { streamingState } from '~/lib/stores/streaming';
 import { filesToArtifacts, uploadedFilesToArtifacts } from '~/utils/fileUtils';
 import { escapeBoltTags } from '~/utils/projectCommands';
 import { supabaseConnection } from '~/lib/stores/supabase';
+import { notesStore } from '~/lib/stores/notes';
 import { defaultDesignScheme, type DesignScheme } from '~/types/design-scheme';
 import type { ElementInfo } from '~/components/workbench/Inspector';
 
@@ -150,6 +151,7 @@ export const ChatImpl = memo(
     const [apiKeys, setApiKeys] = useState<Record<string, string>>({});
     const [chatMode, setChatMode] = useState<'discuss' | 'build'>('build');
     const [selectedElement, setSelectedElement] = useState<ElementInfo | null>(null);
+    const notes = useStore(notesStore);
     const {
       messages,
       isLoading,
@@ -172,6 +174,7 @@ export const ChatImpl = memo(
         contextOptimization: contextOptimizationEnabled,
         chatMode,
         designScheme,
+        userNotes: notes.map((n) => n.text).join('\n'),
         supabase: {
           isConnected: supabaseConn.isConnected,
           hasSelectedProject: !!selectedProject,
