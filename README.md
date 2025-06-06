@@ -108,6 +108,7 @@ project, please check the [project management guide](./PROJECT.md) to get starte
 - **Download projects as ZIP** for easy portability Sync to a folder on the host.
 - **Integration-ready Docker support** for a hassle-free setup.
 - **Deploy** directly to **Netlify**, **Vercel**, or **Cloudflare Pages**
+- **Guided Setup Wizard** for Supabase and Firebase connections
 - **Import Figma designs** to generate starter UI code.
 
 ## Setup

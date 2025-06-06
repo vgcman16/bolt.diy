@@ -12,6 +12,7 @@ bolt.diy allows you to choose the LLM that you use for each prompt! Currently, y
   - [Entering API Keys](#entering-api-keys)
     - [1. Set API Keys in the `.env.local` File](#1-set-api-keys-in-the-envlocal-file)
     - [2. Configure API Keys Directly in the Application](#2-configure-api-keys-directly-in-the-application)
+    - [Supabase / Firebase Setup Wizard](#supabase--firebase-setup-wizard)
 - [Run the Application](#run-the-application)
   - [Option 1: Without Docker](#option-1-without-docker)
   - [Option 2: With Docker](#option-2-with-docker)
@@ -115,6 +116,15 @@ Alternatively, you can configure your API keys directly in the application once 
 This method allows you to easily add or update your keys without needing to modify files directly.
 
 Once you've configured your keys, the application will be ready to use the selected LLMs.
+
+---
+
+### Supabase / Firebase Setup Wizard
+
+bolt.diy now includes a simple setup wizard for connecting to either Supabase or Firebase.
+Open the **Setup Wizard** from the chat box to enter your API keys and automatically generate
+the necessary environment variables. Once connected, the wizard provides sample code for
+initializing the selected service using the values from your `.env.local` file.
 
 ---
 
