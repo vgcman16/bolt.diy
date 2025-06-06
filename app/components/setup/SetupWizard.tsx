@@ -47,10 +47,22 @@ export function SetupWizard() {
               <div className="space-y-4">
                 <DialogTitle>Select a Provider</DialogTitle>
                 <div className="flex gap-2">
-                  <DialogButton type="primary" onClick={() => { setProvider('supabase'); setStep(2); }}>
+                  <DialogButton
+                    type="primary"
+                    onClick={() => {
+                      setProvider('supabase');
+                      setStep(2);
+                    }}
+                  >
                     Supabase
                   </DialogButton>
-                  <DialogButton type="primary" onClick={() => { setProvider('firebase'); setStep(2); }}>
+                  <DialogButton
+                    type="primary"
+                    onClick={() => {
+                      setProvider('firebase');
+                      setStep(2);
+                    }}
+                  >
                     Firebase
                   </DialogButton>
                 </div>
@@ -85,7 +97,9 @@ export function SetupWizard() {
                 )}
                 {supabaseConn.credentials && (
                   <div className="space-y-2 text-xs bg-bolt-elements-background-depth-3 p-3 rounded">
-                    <div>Add these to your <code>.env.local</code>:</div>
+                    <div>
+                      Add these to your <code>.env.local</code>:
+                    </div>
                     <pre>{`VITE_SUPABASE_URL=${supabaseConn.credentials.supabaseUrl}\nVITE_SUPABASE_ANON_KEY=${supabaseConn.credentials.anonKey}`}</pre>
                     <div className="mt-2">Sample code:</div>
                     <pre>{`import { createClient } from '@supabase/supabase-js';\n\nexport const supabase = createClient(import.meta.env.VITE_SUPABASE_URL!, import.meta.env.VITE_SUPABASE_ANON_KEY!);`}</pre>
@@ -111,12 +125,16 @@ export function SetupWizard() {
                   value={firebase.projectId}
                   onChange={(e) => updateFirebaseConfig({ projectId: e.currentTarget.value })}
                 />
-                <DialogButton type="primary" onClick={handleFirebaseSave}>Save</DialogButton>
+                <DialogButton type="primary" onClick={handleFirebaseSave}>
+                  Save
+                </DialogButton>
               </div>
             )}
             {provider === 'firebase' && step === 3 && (
               <div className="space-y-2 text-xs bg-bolt-elements-background-depth-3 p-3 rounded">
-                <div>Add these to your <code>.env.local</code>:</div>
+                <div>
+                  Add these to your <code>.env.local</code>:
+                </div>
                 <pre>{`VITE_FIREBASE_API_KEY=${firebase.apiKey}\nVITE_FIREBASE_AUTH_DOMAIN=${firebase.authDomain}\nVITE_FIREBASE_PROJECT_ID=${firebase.projectId}`}</pre>
                 <div className="mt-2">Sample code:</div>
                 <pre>{`import { initializeApp } from 'firebase/app';\nimport { getAuth } from 'firebase/auth';\nimport { getFirestore } from 'firebase/firestore';\n\nconst firebaseConfig = {\n  apiKey: import.meta.env.VITE_FIREBASE_API_KEY!,\n  authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN!,\n  projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID!,\n};\n\nconst app = initializeApp(firebaseConfig);\nexport const auth = getAuth(app);\nexport const db = getFirestore(app);`}</pre>

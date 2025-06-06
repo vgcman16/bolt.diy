@@ -31,24 +31,12 @@ export class PromptLibrary {
     default: {
       label: 'Default Prompt',
       description: 'This is the battle tested default system Prompt',
-      get: (options) =>
-        getSystemPrompt(
-          options.cwd,
-          options.supabase,
-          options.designScheme,
-          options.userNotes,
-        ),
+      get: (options) => getSystemPrompt(options.cwd, options.supabase, options.designScheme, options.userNotes),
     },
     enhanced: {
       label: 'Fine Tuned Prompt',
       description: 'An fine tuned prompt for better results',
-      get: (options) =>
-        getFineTunedPrompt(
-          options.cwd,
-          options.supabase,
-          options.designScheme,
-          options.userNotes,
-        ),
+      get: (options) => getFineTunedPrompt(options.cwd, options.supabase, options.designScheme, options.userNotes),
     },
     optimized: {
       label: 'Optimized Prompt (experimental)',

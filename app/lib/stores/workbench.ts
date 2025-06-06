@@ -629,12 +629,9 @@ export class WorkbenchStore {
     }
   }
 
-  actionStreamSampler = createSampler(
-    async (data: ActionCallbackData, isStreaming: boolean = false) => {
-      return await this._runAction(data, isStreaming);
-    },
-    ACTION_STREAM_SAMPLE_INTERVAL,
-  );
+  actionStreamSampler = createSampler(async (data: ActionCallbackData, isStreaming: boolean = false) => {
+    return await this._runAction(data, isStreaming);
+  }, ACTION_STREAM_SAMPLE_INTERVAL);
 
   #getArtifact(id: string) {
     const artifacts = this.artifacts.get();

@@ -485,11 +485,7 @@ export const BaseChat = React.forwardRef<HTMLDivElement, BaseChatProps>(
               </div>
             </StickToBottom>
             <div className="flex flex-col justify-center">
-              {!chatStarted && (
-                <div className="flex justify-center gap-2">
-                  {ImportButtons(importChat)}
-                </div>
-              )}
+              {!chatStarted && <div className="flex justify-center gap-2">{ImportButtons(importChat)}</div>}
               <div className="flex flex-col gap-5">
                 {!chatStarted &&
                   ExamplePrompts((event, messageInput) => {

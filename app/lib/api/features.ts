@@ -3,18 +3,22 @@ export interface Feature {
    * Unique identifier for the feature.
    */
   id: string;
+
   /**
    * Short title of the feature to display in the UI.
    */
   name: string;
+
   /**
    * Description of what the feature does.
    */
   description: string;
+
   /**
    * Whether the user has already viewed/acknowledged this feature.
    */
   viewed: boolean;
+
   /**
    * ISO date string for when the feature was released.
    */
