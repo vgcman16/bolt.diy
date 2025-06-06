@@ -34,6 +34,14 @@ export const STARTER_TEMPLATES: Template[] = [
     icon: 'i-bolt:expo',
   },
   {
+    name: 'React Native',
+    label: 'React Native',
+    description: 'React Native CLI starter for building native mobile apps',
+    githubRepo: 'xKevIsDev/bolt-react-native-template',
+    tags: ['mobile', 'react-native', 'mobile-app', 'android', 'iphone'],
+    icon: 'i-bolt:react-native',
+  },
+  {
     name: 'Basic Astro',
     label: 'Astro Basic',
     description: 'Lightweight Astro starter template for building fast static websites',

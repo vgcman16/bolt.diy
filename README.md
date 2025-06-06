@@ -110,6 +110,7 @@ project, please check the [project management guide](./PROJECT.md) to get starte
 - **Deploy** directly to **Netlify**, **Vercel**, or **Cloudflare Pages**
 - **Guided Setup Wizard** for Supabase and Firebase connections
 - **Import Figma designs** to generate starter UI code.
+ - **Mobile starter templates** for React Native and Expo with [QR-code previews](docs/docs/mobile-preview.md) via Expo Go.
 
 ## Setup
 
