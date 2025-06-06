@@ -4,8 +4,7 @@ import { useState, useEffect } from 'react';
  * Determine the current viewport width in both browser and server contexts.
  * When `window` is not available (e.g. during SSR), a fallback width is used.
  */
-const getWidth = (fallback: number): number =>
-  typeof window !== 'undefined' ? window.innerWidth : fallback;
+const getWidth = (fallback: number): number => (typeof window !== 'undefined' ? window.innerWidth : fallback);
 
 /**
  * Returns `true` if the viewport width is less than the provided threshold.
@@ -13,15 +12,16 @@ const getWidth = (fallback: number): number =>
  * is undefined.
  */
 const useViewport = (threshold = 1024, fallbackWidth = 1024) => {
-  const [isSmallViewport, setIsSmallViewport] = useState(
-    getWidth(fallbackWidth) < threshold,
-  );
+  const [isSmallViewport, setIsSmallViewport] = useState(getWidth(fallbackWidth) < threshold);
 
   useEffect(() => {
-    if (typeof window === 'undefined') return;
+    if (typeof window === 'undefined') {
+      return () => {};
+    }
 
-    const handleResize = () =>
+    const handleResize = (): void => {
       setIsSmallViewport(window.innerWidth < threshold);
+    };
 
     window.addEventListener('resize', handleResize);
 
