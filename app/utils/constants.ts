@@ -137,4 +137,28 @@ export const STARTER_TEMPLATES: Template[] = [
     tags: ['angular', 'typescript', 'frontend', 'spa'],
     icon: 'i-bolt:angular',
   },
+  {
+    name: 'Blog',
+    label: 'Blog Template',
+    description: 'Basic blog starter to quickly publish articles',
+    githubRepo: 'xKevIsDev/bolt-blog-template',
+    tags: ['blog', 'content'],
+    icon: 'i-bolt:stars',
+  },
+  {
+    name: 'SaaS Dashboard',
+    label: 'SaaS Dashboard',
+    description: 'Starter dashboard layout for SaaS products',
+    githubRepo: 'xKevIsDev/bolt-saas-template',
+    tags: ['saas', 'dashboard'],
+    icon: 'i-bolt:stars',
+  },
+  {
+    name: 'Ecommerce',
+    label: 'Ecommerce Site',
+    description: 'Template for setting up an online store',
+    githubRepo: 'xKevIsDev/bolt-ecommerce-template',
+    tags: ['ecommerce', 'shop'],
+    icon: 'i-bolt:stars',
+  },
 ];

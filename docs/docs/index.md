@@ -44,6 +44,7 @@ Also [this pinned post in our community](https://thinktank.ottomator.ai/t/videos
 - **One-click deployment** to **Netlify**, **Vercel**, or **Cloudflare Pages**.
 - **Import Figma designs** to bootstrap your UI code.
  - **Mobile starter templates** for React Native and Expo with [QR-code preview using Expo Go](mobile-preview.md).
+- **Project templates** to kickstart your app with examples like a Blog, SaaS dashboard, or Ecommerce site. ([learn more](project-templates.md))
 
 ---
 
