@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { ClientOnly } from 'remix-utils/client-only';
 import { classNames } from '~/utils/classNames';
 import { PROVIDER_LIST } from '~/utils/constants';
@@ -69,6 +69,17 @@ interface ChatBoxProps {
 }
 
 export const ChatBox: React.FC<ChatBoxProps> = (props) => {
+  useEffect(() => {
+    (window as any).__BOLT_ASK_SNIPPET__ = (code: string, lang: string) => {
+      const message = `*What does this code do?*\n\`\`\`${lang || 'plaintext'}\n${code}\n\`\`\`\n`;
+      props.handleSendMessage?.({} as any, message);
+    };
+
+    return () => {
+      delete (window as any).__BOLT_ASK_SNIPPET__;
+    };
+  }, [props.handleSendMessage]);
+
   return (
     <div
       data-prompt-enhanced={props.promptEnhanced}
