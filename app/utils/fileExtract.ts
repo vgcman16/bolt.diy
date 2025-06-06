@@ -1,11 +1,22 @@
-import * as pdfjsLib from 'pdfjs-dist/build/pdf.mjs';
-import pdfWorker from 'pdfjs-dist/build/pdf.worker.mjs';
 import mammoth from 'mammoth/mammoth.browser';
 
-pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker;
+/*
+ * Lazily load pdf.js modules so that server environments don't attempt to
+ * resolve them during the initial import of this file. This avoids errors when
+ * running in Node.js where the browser-specific build of pdf.js isn't
+ * available.
+ */
+async function loadPdfJs() {
+  const pdfjsLib = await import('pdfjs-dist/build/pdf.mjs');
+  const pdfWorker = await import('pdfjs-dist/build/pdf.worker.mjs');
+  pdfjsLib.GlobalWorkerOptions.workerSrc = pdfWorker.default ?? pdfWorker;
+
+  return pdfjsLib;
+}
 
 export async function extractTextFromFile(file: File): Promise<string> {
   if (file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf')) {
+    const pdfjsLib = await loadPdfJs();
     const arrayBuffer = await file.arrayBuffer();
     const pdf = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
     const texts: string[] = [];
