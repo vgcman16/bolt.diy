@@ -467,7 +467,31 @@ export class WorkbenchStore {
   }
 
   abortAllActions() {
-    // TODO: what do we wanna do and how do we wanna recover from this?
+    // Reset any queued actions so nothing new runs
+    this.#globalExecutionQueue = Promise.resolve();
+
+    // Abort currently running command in the shell if there is one
+    const execution = this.boltTerminal.executionState.get();
+
+    if (execution?.active) {
+      execution.abort?.();
+
+      // Send CTRL+C to ensure the process is interrupted
+      this.boltTerminal.terminal?.input('\x03');
+    }
+
+    // Abort all actions for every artifact
+    const artifacts = this.artifacts.get();
+
+    for (const artifact of Object.values(artifacts)) {
+      const actions = artifact.runner.actions.get();
+
+      for (const action of Object.values(actions)) {
+        if (action.status === 'running' || action.status === 'pending') {
+          action.abort();
+        }
+      }
+    }
   }
 
   setReloadedMessages(messages: string[]) {
