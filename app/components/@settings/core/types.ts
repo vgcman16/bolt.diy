@@ -79,6 +79,7 @@ export const TAB_LABELS: Record<TabType, string> = {
   connection: 'Connections',
   debug: 'Debug',
   'event-logs': 'Event Logs',
+  notes: 'Notes',
   update: 'Updates',
   'task-manager': 'Task Manager',
   'tab-management': 'Tab Management',
