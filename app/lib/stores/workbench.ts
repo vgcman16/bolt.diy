@@ -17,6 +17,7 @@ import { extractRelativePath } from '~/utils/diff';
 import { description } from '~/lib/persistence';
 import Cookies from 'js-cookie';
 import { createSampler } from '~/utils/sampler';
+import { ACTION_STREAM_SAMPLE_INTERVAL } from '~/utils/constants';
 import type { ActionAlert, DeployAlert, SupabaseAlert } from '~/types/actions';
 
 const { saveAs } = fileSaver;
@@ -604,9 +605,12 @@ export class WorkbenchStore {
     }
   }
 
-  actionStreamSampler = createSampler(async (data: ActionCallbackData, isStreaming: boolean = false) => {
-    return await this._runAction(data, isStreaming);
-  }, 100); // TODO: remove this magic number to have it configurable
+  actionStreamSampler = createSampler(
+    async (data: ActionCallbackData, isStreaming: boolean = false) => {
+      return await this._runAction(data, isStreaming);
+    },
+    ACTION_STREAM_SAMPLE_INTERVAL,
+  );
 
   #getArtifact(id: string) {
     const artifacts = this.artifacts.get();
