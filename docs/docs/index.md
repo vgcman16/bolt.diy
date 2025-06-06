@@ -43,6 +43,7 @@ Also [this pinned post in our community](https://thinktank.ottomator.ai/t/videos
 - **Integration-ready Docker support** for a hassle-free setup.
 - **One-click deployment** to **Netlify**, **Vercel**, or **Cloudflare Pages**.
 - **Import Figma designs** to bootstrap your UI code.
+ - **Mobile starter templates** for React Native and Expo with [QR-code preview using Expo Go](mobile-preview.md).
 
 ---
 
